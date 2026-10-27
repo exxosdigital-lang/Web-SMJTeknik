@@ -59,22 +59,48 @@ function BrandFilter({ brands, productsInCategory, selectedBrands, onBrandChange
 }
 
 function ProductCard({ product }) {
-  return (
-    <article className="product-card">
-      <Link to={`/product/${product.id}`} className="product-card-image-link" aria-label={`View ${product.brand} ${product.name}`}>
-        <ProductImage product={product} />
-      </Link>
+  const isCheetah = product.category === 'protective-footwear' && product.brand === 'CHEETAH'
+  const productRoute = isCheetah ? '/protective-footwear/cheetah' : `/product/${product.id}`
+  const cardContent = (
+    <>
+      {isCheetah ? (
+        <div className="product-card-image-link">
+          <ProductImage product={product} />
+        </div>
+      ) : (
+        <Link to={productRoute} className="product-card-image-link" aria-label={`View ${product.brand} ${product.name}`}>
+          <ProductImage product={product} />
+        </Link>
+      )}
       <div className="product-card-content">
         <p className="product-brand">{product.brand}</p>
         <h3>{product.name}</h3>
         {product.isSample && <p className="product-sample-label">Sample catalog entry</p>}
         <p className="product-description">{product.description}</p>
         {product.productCode && <p className="product-code">Code: {product.productCode}</p>}
-        <Link to={`/product/${product.id}`} className="product-detail-link">
-          View Detail <ArrowRight size={16} aria-hidden="true" />
-        </Link>
+        {isCheetah ? (
+          <span className="product-detail-link">
+            View Detail <ArrowRight size={16} aria-hidden="true" />
+          </span>
+        ) : (
+          <Link to={productRoute} className="product-detail-link">
+            View Detail <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        )}
       </div>
-    </article>
+    </>
+  )
+
+  return isCheetah ? (
+    <Link
+      to={productRoute}
+      className="product-card product-card-whole-link"
+      aria-label="View CHEETAH product details"
+    >
+      {cardContent}
+    </Link>
+  ) : (
+    <article className="product-card">{cardContent}</article>
   )
 }
 

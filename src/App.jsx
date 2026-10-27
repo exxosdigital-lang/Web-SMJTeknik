@@ -10,6 +10,7 @@ import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Placeholder from './pages/Placeholder.jsx'
 import ProductDetail from './pages/ProductDetail.jsx'
+import CheetahDetail from './pages/CheetahDetail.jsx'
 
 function RouteContent() {
   const location = useLocation()
@@ -24,6 +25,8 @@ function RouteContent() {
         ? `${siteConfig.brandName} | ${siteConfig.tagline}`
         : currentProduct
           ? `${currentProduct.name} | ${currentProduct.brand} | ${siteConfig.brandName}`
+        : location.pathname === '/protective-footwear/cheetah'
+          ? `Cheetah | Protective Footwear | ${siteConfig.brandName}`
         : currentCategory
           ? `${currentCategory.title} | ${siteConfig.brandName}`
           : location.pathname === '/about-us'
@@ -56,6 +59,7 @@ function RouteContent() {
                   />}
             />
           ))}
+          <Route path="/protective-footwear/cheetah" element={<CheetahDetail />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route
             path="/about-us"
