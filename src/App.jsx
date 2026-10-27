@@ -13,6 +13,7 @@ import ProductDetail from './pages/ProductDetail.jsx'
 import CheetahDetail from './pages/CheetahDetail.jsx'
 import KingPowerDetail from './pages/KingPowerDetail.jsx'
 import SimonDetail from './pages/SimonDetail.jsx'
+import ComfortaKingIndoDetail from './pages/ComfortaKingIndoDetail.jsx'
 
 function RouteContent() {
   const location = useLocation()
@@ -33,6 +34,8 @@ function RouteContent() {
           ? `King Power | Protective Footwear | ${siteConfig.brandName}`
         : location.pathname === '/protective-footwear/simon'
           ? `Simon | Protective Footwear | ${siteConfig.brandName}`
+        : location.pathname === '/protective-footwear/comforta-king-indo'
+          ? `Comforta King Indo | Protective Footwear | ${siteConfig.brandName}`
         : currentCategory
           ? `${currentCategory.title} | ${siteConfig.brandName}`
           : location.pathname === '/about-us'
@@ -68,6 +71,7 @@ function RouteContent() {
           <Route path="/protective-footwear/cheetah" element={<CheetahDetail />} />
           <Route path="/protective-footwear/king-power" element={<KingPowerDetail />} />
           <Route path="/protective-footwear/simon" element={<SimonDetail />} />
+          <Route path="/protective-footwear/comforta-king-indo" element={<ComfortaKingIndoDetail />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route
             path="/about-us"

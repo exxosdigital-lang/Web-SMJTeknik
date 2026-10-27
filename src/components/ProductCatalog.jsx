@@ -64,6 +64,7 @@ function ProductCard({ product }) {
         CHEETAH: '/protective-footwear/cheetah',
         'KING POWER': '/protective-footwear/king-power',
         SIMON: '/protective-footwear/simon',
+        'COMFORTA KING INDO': '/protective-footwear/comforta-king-indo',
       }[product.brand]
     : null
   const isCustomProduct = Boolean(customProductRoute)
