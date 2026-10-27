@@ -59,11 +59,17 @@ function BrandFilter({ brands, productsInCategory, selectedBrands, onBrandChange
 }
 
 function ProductCard({ product }) {
-  const isCheetah = product.category === 'protective-footwear' && product.brand === 'CHEETAH'
-  const productRoute = isCheetah ? '/protective-footwear/cheetah' : `/product/${product.id}`
+  const customProductRoute = product.category === 'protective-footwear'
+    ? {
+        CHEETAH: '/protective-footwear/cheetah',
+        'KING POWER': '/protective-footwear/king-power',
+      }[product.brand]
+    : null
+  const isCustomProduct = Boolean(customProductRoute)
+  const productRoute = customProductRoute ?? `/product/${product.id}`
   const cardContent = (
     <>
-      {isCheetah ? (
+      {isCustomProduct ? (
         <div className="product-card-image-link">
           <ProductImage product={product} />
         </div>
@@ -78,7 +84,7 @@ function ProductCard({ product }) {
         {product.isSample && <p className="product-sample-label">Sample catalog entry</p>}
         <p className="product-description">{product.description}</p>
         {product.productCode && <p className="product-code">Code: {product.productCode}</p>}
-        {isCheetah ? (
+        {isCustomProduct ? (
           <span className="product-detail-link">
             View Detail <ArrowRight size={16} aria-hidden="true" />
           </span>
@@ -91,11 +97,11 @@ function ProductCard({ product }) {
     </>
   )
 
-  return isCheetah ? (
+  return isCustomProduct ? (
     <Link
       to={productRoute}
       className="product-card product-card-whole-link"
-      aria-label="View CHEETAH product details"
+      aria-label={`View ${product.brand} product details`}
     >
       {cardContent}
     </Link>

@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound.jsx'
 import Placeholder from './pages/Placeholder.jsx'
 import ProductDetail from './pages/ProductDetail.jsx'
 import CheetahDetail from './pages/CheetahDetail.jsx'
+import KingPowerDetail from './pages/KingPowerDetail.jsx'
 
 function RouteContent() {
   const location = useLocation()
@@ -27,6 +28,8 @@ function RouteContent() {
           ? `${currentProduct.name} | ${currentProduct.brand} | ${siteConfig.brandName}`
         : location.pathname === '/protective-footwear/cheetah'
           ? `Cheetah | Protective Footwear | ${siteConfig.brandName}`
+        : location.pathname === '/protective-footwear/king-power'
+          ? `King Power | Protective Footwear | ${siteConfig.brandName}`
         : currentCategory
           ? `${currentCategory.title} | ${siteConfig.brandName}`
           : location.pathname === '/about-us'
@@ -60,6 +63,7 @@ function RouteContent() {
             />
           ))}
           <Route path="/protective-footwear/cheetah" element={<CheetahDetail />} />
+          <Route path="/protective-footwear/king-power" element={<KingPowerDetail />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route
             path="/about-us"
