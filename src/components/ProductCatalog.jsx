@@ -63,6 +63,7 @@ function ProductCard({ product }) {
     ? {
         CHEETAH: '/protective-footwear/cheetah',
         'KING POWER': '/protective-footwear/king-power',
+        SIMON: '/protective-footwear/simon',
       }[product.brand]
     : null
   const isCustomProduct = Boolean(customProductRoute)
