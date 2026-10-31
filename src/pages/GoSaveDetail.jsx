@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const pdfPath = '/documents/GoSaveDetail2026.pdf'
+const pdfPath = '/documents/GoSave2026.pdf'
 
 export default function GoSaveDetail() {
   useEffect(() => {
