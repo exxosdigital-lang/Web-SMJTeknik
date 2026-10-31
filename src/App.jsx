@@ -14,6 +14,7 @@ import CheetahDetail from './pages/CheetahDetail.jsx'
 import KingPowerDetail from './pages/KingPowerDetail.jsx'
 import SimonDetail from './pages/SimonDetail.jsx'
 import ComfortaKingIndoDetail from './pages/ComfortaKingIndoDetail.jsx'
+import GoSaveDetail from './pages/GoSaveDetail.jsx'
 
 function RouteContent() {
   const location = useLocation()
@@ -72,6 +73,7 @@ function RouteContent() {
           <Route path="/protective-footwear/king-power" element={<KingPowerDetail />} />
           <Route path="/protective-footwear/simon" element={<SimonDetail />} />
           <Route path="/protective-footwear/comforta-king-indo" element={<ComfortaKingIndoDetail />} />
+          <Route path="/protective-footwear/gosave" element={<GoSaveDetail />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route
             path="/about-us"
@@ -103,3 +105,5 @@ function RouteContent() {
 export default function App() {
   return <RouteContent />
 }
+
+

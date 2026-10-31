@@ -65,6 +65,7 @@ function ProductCard({ product }) {
         'KING POWER': '/protective-footwear/king-power',
         SIMON: '/protective-footwear/simon',
         'COMFORTA KING INDO': '/protective-footwear/comforta-king-indo',
+        GoSave: '/protective-footwear/gosave',
       }[product.brand]
     : null
   const isCustomProduct = Boolean(customProductRoute)
@@ -183,3 +184,4 @@ export default function ProductCatalog({ category }) {
     </section>
   )
 }
+
