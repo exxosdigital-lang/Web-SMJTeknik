@@ -43,6 +43,8 @@ jobs:
           set net:timeout 60
           set net:max-retries 3
           set net:reconnect-interval-base 5
+          pwd
+          ls -la
           mirror -R --verbose ./dist/ ./public_html/
           bye
           EOF
