@@ -106,10 +106,29 @@ a:focus-visible {
 }
 
 .dropdown-panel-open,
-.nav-dropdown:focus-within .dropdown-panel {
+.nav-dropdown:focus-within > .dropdown-panel {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+.tools-menu-item {
+  position: relative;
+  width: 80px;
+}
+
+.tools-submenu {
+  top: 0;
+  left: 78px;
+  width: 192px;
+  transform: none;
+}
+
+.tools-submenu.dropdown-panel-open,
+.tools-menu-item:focus-within > .tools-submenu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
 }
 
 .dropdown-link {

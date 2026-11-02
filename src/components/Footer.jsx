@@ -1,24 +1,25 @@
 import { ArrowUpRight, MapPin, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { navigationGroups, siteConfig } from '../config/site.js'
-import BrandLogo from './BrandLogo.jsx'
 
-const productLinks = navigationGroups.flatMap((group) => group.items)
+function getNavigationLinks(items = []) {
+  return items.flatMap((item) => (
+    item.items
+      ? getNavigationLinks(item.items)
+      : item.to
+        ? [item]
+        : []
+  ))
+}
+
+const productLinks = navigationGroups.flatMap((group) => getNavigationLinks(group.items))
 
 export default function Footer() {
   return (
     <footer className="bg-navy-950 text-slate-300">
       <div className="site-container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12 lg:py-16">
         <div>
-          <div className="flex items-center gap-3">
-            <Link to="/" aria-label={`${siteConfig.displayCompanyName} home`} className="inline-flex shrink-0 rounded bg-white p-2">
-              <BrandLogo className="footer-logo" />
-            </Link>
-            <span className="text-sm font-semibold leading-tight text-white">
-              {siteConfig.displayCompanyName}
-            </span>
-          </div>
-          <p className="mt-5 text-sm font-semibold text-white">{siteConfig.tagline}</p>
+          <p className="text-sm font-semibold text-white">{siteConfig.tagline}</p>
           <p className="mt-3 max-w-xs text-sm leading-6 text-slate-400">
             Reliable safety equipment and professional tools for safer and more productive workplaces.
           </p>
@@ -28,10 +29,16 @@ export default function Footer() {
           <h2 className="footer-heading">Quick Links</h2>
           <ul className="space-y-3">
             <li><Link className="footer-link" to="/">Home</Link></li>
-            <li><Link className="footer-link" to={navigationGroups[0].items[0].to}>Safety Equipment</Link></li>
-            <li><Link className="footer-link" to={navigationGroups[1].items[0].to}>Tools</Link></li>
+            {navigationGroups.map((group) => {
+              const to = group.to ?? getNavigationLinks(group.items)[0]?.to
+
+              return to ? (
+                <li key={group.label}>
+                  <Link className="footer-link" to={to}>{group.label}</Link>
+                </li>
+              ) : null
+            })}
             <li><Link className="footer-link" to="/about-us">About Us</Link></li>
-            <li><Link className="footer-link" to="/contact-message">Contact Message</Link></li>
           </ul>
         </div>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, MessageCircle, Menu, X } from 'lucide-react'
+import { ChevronDown, ChevronRight, MessageCircle, Menu, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import { navigationGroups, siteConfig } from '../config/site.js'
 import BrandLogo from './BrandLogo.jsx'
@@ -21,10 +21,12 @@ function WhatsAppLink({ className = '' }) {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openGroup, setOpenGroup] = useState('')
+  const [openSubgroup, setOpenSubgroup] = useState('')
 
   const closeMenu = () => {
     setMobileOpen(false)
     setOpenGroup('')
+    setOpenSubgroup('')
   }
 
   return (
@@ -50,20 +52,40 @@ export default function Navbar() {
             Home
           </NavLink>
           {navigationGroups.map((group) => (
+            group.to ? (
+              <NavLink
+                key={group.label}
+                to={group.to}
+                className={({ isActive }) => `nav-link${isActive ? ' nav-link-active' : ''}`}
+              >
+                {group.label}
+              </NavLink>
+            ) : (
             <div
               key={group.label}
               className="nav-dropdown"
-              onMouseEnter={() => setOpenGroup(group.label)}
-              onMouseLeave={() => setOpenGroup('')}
+              onMouseEnter={() => {
+                setOpenGroup(group.label)
+              }}
+              onMouseLeave={() => {
+                setOpenGroup('')
+                setOpenSubgroup('')
+              }}
             >
               <button
                 type="button"
                 className="nav-link inline-flex items-center gap-1.5"
                 aria-haspopup="true"
                 aria-expanded={openGroup === group.label}
-                onClick={() => setOpenGroup(openGroup === group.label ? '' : group.label)}
+                onClick={() => {
+                  setOpenGroup(openGroup === group.label ? '' : group.label)
+                  setOpenSubgroup('')
+                }}
                 onKeyDown={(event) => {
-                  if (event.key === 'Escape') setOpenGroup('')
+                  if (event.key === 'Escape') {
+                    setOpenGroup('')
+                    setOpenSubgroup('')
+                  }
                 }}
               >
                 {group.label}
@@ -71,29 +93,68 @@ export default function Navbar() {
               </button>
               <div className={`dropdown-panel${openGroup === group.label ? ' dropdown-panel-open' : ''}`}>
                 {group.items.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className="dropdown-link"
-                    onClick={() => setOpenGroup('')}
-                  >
-                    {item.label}
-                  </NavLink>
+                  item.items ? (
+                    <div
+                      key={item.label}
+                      className="tools-menu-item"
+                      onMouseEnter={() => setOpenSubgroup(`${group.label}:${item.label}`)}
+                      onMouseLeave={() => setOpenSubgroup('')}
+                    >
+                      <button
+                        type="button"
+                        className="dropdown-link flex w-full items-center justify-between text-left"
+                        aria-haspopup="true"
+                        aria-expanded={openSubgroup === `${group.label}:${item.label}`}
+                        onClick={() => setOpenSubgroup(
+                          openSubgroup === `${group.label}:${item.label}` ? '' : `${group.label}:${item.label}`,
+                        )}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Escape') setOpenSubgroup('')
+                        }}
+                      >
+                        {item.label}
+                        <ChevronRight size={15} aria-hidden="true" />
+                      </button>
+                      <div
+                        className={`dropdown-panel tools-submenu ${
+                          openSubgroup === `${group.label}:${item.label}` ? 'dropdown-panel-open' : ''
+                        }`}
+                      >
+                        {item.items.map((nestedItem) => (
+                          <NavLink
+                            key={nestedItem.to}
+                            to={nestedItem.to}
+                            className="dropdown-link"
+                            onClick={() => {
+                              setOpenGroup('')
+                              setOpenSubgroup('')
+                            }}
+                          >
+                            {nestedItem.label}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className="dropdown-link"
+                      onClick={() => setOpenGroup('')}
+                    >
+                      {item.label}
+                    </NavLink>
+                  )
                 ))}
               </div>
             </div>
+            )
           ))}
           <NavLink
             to="/about-us"
             className={({ isActive }) => `nav-link${isActive ? ' nav-link-active' : ''}`}
           >
             About Us
-          </NavLink>
-          <NavLink
-            to="/contact-message"
-            className={({ isActive }) => `nav-link${isActive ? ' nav-link-active' : ''}`}
-          >
-            Contact Message
           </NavLink>
         </div>
 
@@ -120,41 +181,86 @@ export default function Navbar() {
               Home
             </NavLink>
             {navigationGroups.map((group) => (
-              <section key={group.label} className="mobile-nav-group">
-                <button
-                  type="button"
-                  className="mobile-nav-link flex w-full items-center justify-between"
-                  aria-expanded={openGroup === group.label}
-                  onClick={() => setOpenGroup(openGroup === group.label ? '' : group.label)}
+              group.to ? (
+                <NavLink
+                  key={group.label}
+                  to={group.to}
+                  className="mobile-nav-link block"
+                  onClick={closeMenu}
                 >
                   {group.label}
-                  <ChevronDown
-                    size={17}
-                    className={openGroup === group.label ? 'rotate-180 transition-transform' : 'transition-transform'}
-                    aria-hidden="true"
-                  />
-                </button>
-                {openGroup === group.label && (
-                  <div className="mobile-submenu">
-                    {group.items.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
-                        className="mobile-submenu-link"
-                        onClick={closeMenu}
-                      >
-                        {item.label}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
-              </section>
+                </NavLink>
+              ) : (
+                <section key={group.label} className="mobile-nav-group">
+                  <button
+                    type="button"
+                    className="mobile-nav-link flex w-full items-center justify-between"
+                    aria-expanded={openGroup === group.label}
+                    onClick={() => {
+                      setOpenGroup(openGroup === group.label ? '' : group.label)
+                      setOpenSubgroup('')
+                    }}
+                  >
+                    {group.label}
+                    <ChevronDown
+                      size={17}
+                      className={openGroup === group.label ? 'rotate-180 transition-transform' : 'transition-transform'}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  {openGroup === group.label && (
+                    <div className="mobile-submenu">
+                      {group.items.map((item) => (
+                        item.items ? (
+                          <section key={item.label}>
+                            <button
+                              type="button"
+                              className="mobile-submenu-link flex w-full items-center justify-between text-left"
+                              aria-expanded={openSubgroup === `${group.label}:${item.label}`}
+                              onClick={() => setOpenSubgroup(
+                                openSubgroup === `${group.label}:${item.label}` ? '' : `${group.label}:${item.label}`,
+                              )}
+                            >
+                              {item.label}
+                              <ChevronDown
+                                size={16}
+                                className={openSubgroup === `${group.label}:${item.label}` ? 'rotate-180 transition-transform' : 'transition-transform'}
+                                aria-hidden="true"
+                              />
+                            </button>
+                            {openSubgroup === `${group.label}:${item.label}` && (
+                              <div className="mb-1 ml-3 border-l border-slate-200 pl-3">
+                                {item.items.map((nestedItem) => (
+                                  <NavLink
+                                    key={nestedItem.to}
+                                    to={nestedItem.to}
+                                    className="mobile-submenu-link block"
+                                    onClick={closeMenu}
+                                  >
+                                    {nestedItem.label}
+                                  </NavLink>
+                                ))}
+                              </div>
+                            )}
+                          </section>
+                        ) : (
+                          <NavLink
+                            key={item.to}
+                            to={item.to}
+                            className="mobile-submenu-link"
+                            onClick={closeMenu}
+                          >
+                            {item.label}
+                          </NavLink>
+                        )
+                      ))}
+                    </div>
+                  )}
+                </section>
+              )
             ))}
             <NavLink to="/about-us" className="mobile-nav-link" onClick={closeMenu}>
               About Us
-            </NavLink>
-            <NavLink to="/contact-message" className="mobile-nav-link" onClick={closeMenu}>
-              Contact Message
             </NavLink>
             <WhatsAppLink className="button-primary mt-4 w-full justify-center" />
           </div>

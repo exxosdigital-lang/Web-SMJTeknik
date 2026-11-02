@@ -5,7 +5,11 @@ import Navbar from './components/Navbar.jsx'
 import ProductCatalog from './components/ProductCatalog.jsx'
 import WhatsAppButton from './components/WhatsAppButton.jsx'
 import { categories, siteConfig } from './config/site.js'
+import { getBrandBySlug } from './data/brands.js'
 import { catalogCategories, getProductById } from './data/products.js'
+import Brands from './pages/Brands'
+import BrandDetail from './pages/BrandDetail.jsx'
+import AboutUs from './pages/AboutUs.jsx'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Placeholder from './pages/Placeholder.jsx'
@@ -24,11 +28,16 @@ function RouteContent() {
     const currentProduct = location.pathname.startsWith('/product/')
       ? getProductById(location.pathname.split('/').pop())
       : null
+    const currentBrand = location.pathname.startsWith('/brands/')
+      ? getBrandBySlug(location.pathname.split('/').pop())
+      : null
     const pageTitle =
       location.pathname === '/'
         ? `${siteConfig.brandName} | ${siteConfig.tagline}`
         : currentProduct
           ? `${currentProduct.name} | ${currentProduct.brand} | ${siteConfig.brandName}`
+          : currentBrand
+            ? `${currentBrand.name} | Brands | ${siteConfig.brandName}`
         : location.pathname === '/protective-footwear/cheetah'
           ? `Cheetah | Protective Footwear | ${siteConfig.brandName}`
         : location.pathname === '/protective-footwear/king-power'
@@ -40,7 +49,7 @@ function RouteContent() {
         : currentCategory
           ? `${currentCategory.title} | ${siteConfig.brandName}`
           : location.pathname === '/about-us'
-            ? `About Us | ${siteConfig.brandName}`
+            ? 'About Us | CV. Senia Mandiri Jaya'
             : location.pathname === '/contact-message'
               ? `Contact Message | ${siteConfig.brandName}`
               : 'Page Not Found | SMJ Teknik'
@@ -54,6 +63,8 @@ function RouteContent() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/brands" element={<Brands />} />
+          <Route path="/brands/:brandSlug" element={<BrandDetail />} />
           {categories.map((category) => (
             <Route
               key={category.to}
@@ -77,12 +88,7 @@ function RouteContent() {
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route
             path="/about-us"
-            element={
-              <Placeholder
-                title="About Us"
-                description="Learn more about CV. Senia Mandiri Jaya and our commitment to safer, more productive workplaces."
-              />
-            }
+            element={<AboutUs />}
           />
           <Route
             path="/contact-message"
@@ -105,5 +111,3 @@ function RouteContent() {
 export default function App() {
   return <RouteContent />
 }
-
-

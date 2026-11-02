@@ -17,20 +17,39 @@ export const siteConfig = {
 
 export const navigationGroups = [
   {
-    label: 'Safety Equipment',
+    label: 'Category',
     items: [
-      { label: 'Protective Footwear', to: '/safety-equipment/protective-footwear' },
-      { label: 'Safety Glass', to: '/safety-equipment/safety-glass' },
+      {
+        label: 'Protective Footwear',
+        to: '/safety-equipment/protective-footwear',
+      },
+      {
+        label: 'Safety Glass',
+        to: '/safety-equipment/safety-glass',
+      },
+      {
+        label: 'Tools',
+        items: [
+          {
+            label: 'Hand Tools',
+            to: '/tools/hand-tools',
+          },
+          {
+            label: 'Power Tools',
+            to: '/tools/power-tools',
+          },
+          {
+            label: 'Cleaning',
+            to: '/tools/cleaning',
+          },
+        ],
+      },
     ],
   },
   {
-    label: 'Tools',
-    items: [
-      { label: 'Hand Tools', to: '/tools/hand-tools' },
-      { label: 'Power Tools', to: '/tools/power-tools' },
-      { label: 'Cleaning', to: '/tools/cleaning' },
-    ],
-  },
+  label: 'Brands',
+  to: '/brands',
+},
 ]
 
 export const categories = [
